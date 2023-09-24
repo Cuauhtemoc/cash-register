@@ -1,26 +1,10 @@
 import { useState } from 'react';
-
-interface MoneyCounts {
-    [denomination: number]: number;
-}
-
-interface CashRegister {
-    total: number;
-    changeOptions?: MoneyCounts[];
-    moneyCounts: MoneyCounts;
-}
-
-interface CashRegisterHook {
-    cashRegister: CashRegister;
-    emptyRegister: () => void;
-    addMoney: (denomination: number, count: number) => void;
-    takeMoney: (denomination: number, count: number) => void;
-    dispenseChange: (changeAmount: number) => void;
-}
+import { CashRegister, CashRegisterHook, MoneyCounts } from '../types';
 
 const useCashRegister = (): CashRegisterHook => {
     
-    const [cashRegister, setCashRegister] = useState<CashRegister>({
+    const [drawer, setCashRegister] = useState<CashRegister>({
+        denominations:[20,10,5,2,1],
         total: 0,
         changeOptions : [{
             1:1
@@ -37,6 +21,7 @@ const useCashRegister = (): CashRegisterHook => {
     //reset the register
     const emptyRegister = () => {
         setCashRegister({
+            denominations:[20,10,5,2,1],
             total: 0,
             changeOptions : [],
             moneyCounts: {
@@ -51,8 +36,8 @@ const useCashRegister = (): CashRegisterHook => {
     //helper function to update the count of the specific denomination
     const updateRegisterCounts = (denomination: number, count: number): MoneyCounts => {
         return {
-            ...cashRegister.moneyCounts,
-            [denomination]: cashRegister.moneyCounts[denomination] + count,
+            ...drawer.moneyCounts,
+            [denomination]: drawer.moneyCounts[denomination] + count,
         };
     };
     const addMoney = (denomination: number, count: number): void => {
@@ -76,7 +61,7 @@ const useCashRegister = (): CashRegisterHook => {
     const dispenseChange = (target: number) => {
         console.log('test');
         //copy the contents of our register as we don't want to actually modify the contents yet
-        const availableBills = { ...cashRegister.moneyCounts };
+        const availableBills = { ...drawer.moneyCounts };
         //represents the what bills can be included in out change
         const candidates = [20, 10, 5, 2, 1];
         const result: MoneyCounts[] = [];
@@ -123,7 +108,7 @@ const useCashRegister = (): CashRegisterHook => {
         
     }
     return {
-        cashRegister,
+        drawer,
         emptyRegister,
         addMoney,
         takeMoney,
