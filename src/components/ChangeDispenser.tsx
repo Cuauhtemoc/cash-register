@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Alert from "./Alert";
 import { MoneyCounts } from "../types";
 
 interface Props{
@@ -15,7 +14,7 @@ export default function ChangeDispenser({showChangeOptions} : Props) {
         e.preventDefault()
         showChangeOptions(amount);
     }
-    
+
     return (
         <form onSubmit={onSubmit}>
             <div className="grid gap-6 mb-6">

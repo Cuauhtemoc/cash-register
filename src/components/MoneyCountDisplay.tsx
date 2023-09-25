@@ -1,5 +1,5 @@
 import React from "react";
-import { CashRegisterHook, MoneyCounts } from "../types";
+import { CashRegisterHook } from "../types";
 
 interface Props {
     cashRegister: CashRegisterHook;
