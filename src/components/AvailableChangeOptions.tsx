@@ -1,9 +1,9 @@
 import React from 'react';
-import { MoneyCounts } from '../types';
+import { BillCounts } from '../types';
 
 interface Props {
-  options: MoneyCounts[] | undefined;
-  dispenseChange: (change:MoneyCounts) => void;
+  options: BillCounts[] | undefined;
+  dispenseChange: (change:BillCounts) => void;
 }
 
 export default function AvailableChangeOptions({ options, dispenseChange }: Props) {

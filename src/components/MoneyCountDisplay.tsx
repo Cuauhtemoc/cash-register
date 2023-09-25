@@ -10,7 +10,7 @@ export default function MoneyCountDisplay({ cashRegister, emptyRegister }: Props
     return (
         <div className="grid">
             <div className='text-xl text-center'>Cash in drawer:</div>
-            {Object.entries(cashRegister.drawer.moneyCounts).map(([key, value], index) => (
+            {Object.entries(cashRegister.drawer.billCounts).map(([key, value], index) => (
                 <div className='text-center mt-2' key={'count-' + index}>
                     ${key} : {value}
                 </div>

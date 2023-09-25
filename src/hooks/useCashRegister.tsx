@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CashRegister, CashRegisterHook, MoneyCounts } from '../types';
+import { CashRegister, CashRegisterHook, BillCounts } from '../types';
 
 const useCashRegister = (): CashRegisterHook => {
     
@@ -10,7 +10,7 @@ const useCashRegister = (): CashRegisterHook => {
         denominations:[1,2,5,10,20],
         total: 0,
         changeOptions : [],
-        moneyCounts: {
+        billCounts: {
             20: 0,
             10: 0,
             5: 0,
@@ -28,7 +28,7 @@ const useCashRegister = (): CashRegisterHook => {
             denominations:[20,10,5,2,1],
             total: 0,
             changeOptions : [],
-            moneyCounts: {
+            billCounts: {
                 20: 0,
                 10: 0,
                 5: 0,
@@ -38,10 +38,10 @@ const useCashRegister = (): CashRegisterHook => {
         })
     }
     //helper function to update the count of the specific denomination
-    const updateRegisterCounts = (denomination: number, count: number): MoneyCounts => {
+    const updateRegisterCounts = (denomination: number, count: number): BillCounts => {
         return {
-            ...drawer.moneyCounts,
-            [denomination]: drawer.moneyCounts[denomination] + count,
+            ...drawer.billCounts,
+            [denomination]: drawer.billCounts[denomination] + count,
         };
     };
     const addMoney = (denomination: number, count: number): void => {
@@ -49,7 +49,7 @@ const useCashRegister = (): CashRegisterHook => {
         setCashRegister((prevCashRegister) => ({
             ...prevCashRegister,
             total: prevCashRegister.total + denomination * count,
-            moneyCounts: updatedCounts,
+            billCounts: updatedCounts,
         }));
     };
     const hideAlert = () : void => {
@@ -63,13 +63,13 @@ const useCashRegister = (): CashRegisterHook => {
         setCashRegister((prevCashRegister) => ({
             ...prevCashRegister,
             total: prevCashRegister.total - denomination * count,
-            moneyCounts: updatedCounts,
+            billCounts: updatedCounts,
         }));
     };
   
-    const dispenseChange = (change : MoneyCounts) => {
+    const dispenseChange = (change : BillCounts) => {
         let currentTotal = drawer.total;
-        let currentCounts = {...drawer.moneyCounts}
+        let currentCounts = {...drawer.billCounts}
 
         for(const [denomination, count] of Object.entries(change) ){
             //parse the entries to int so we can use them
@@ -83,19 +83,19 @@ const useCashRegister = (): CashRegisterHook => {
         setCashRegister((prevCashRegister) => ({
             ...prevCashRegister,
             total: currentTotal,
-            moneyCounts: {...currentCounts},
+            billCounts: {...currentCounts},
             changeOptions: [],
-            alertColor:'green',
+            alertColor:'#52CC7A',
             alertMessgae: "Change chosen",
             showAlert: true
         }));
     }
-    const showChangeOptions = (target: number) : MoneyCounts[] => {
+    const showChangeOptions = (target: number) : BillCounts[] => {
         //copy the contents of our register as we don't want to actually modify the contents yet
-        const availableBills = { ...drawer.moneyCounts };
+        const availableBills = { ...drawer.billCounts };
         //represents the what bills can be included in out change
         const candidates = [20, 10, 5, 2, 1];
-        const result: MoneyCounts[] = [];
+        const result: BillCounts[] = [];
         //template to make sure the change options are all formatted correcttly
         const changeTemplate = {
             1: 0,
@@ -105,7 +105,7 @@ const useCashRegister = (): CashRegisterHook => {
             20 : 0
         }
         //using a backtrack solution here to find all possible ways the change can be dispensed
-        const backtrack = (currentChange: MoneyCounts, index: number, remainingAmount: number) => {
+        const backtrack = (currentChange: BillCounts, index: number, remainingAmount: number) => {
             //combination found push it to the results array 
             if (remainingAmount === 0) {
                 result.push({ ...changeTemplate, ...currentChange });
@@ -147,12 +147,12 @@ const useCashRegister = (): CashRegisterHook => {
 
         //set the alerts
         if(result.length > 0){
-            drawer.alertColor = "blue";
+            drawer.alertColor = "#add8e6";
             drawer.alertMessgae = "Change dispensed"
             drawer.showAlert = true;
         }
         else {
-            drawer.alertColor = "red";
+            drawer.alertColor = "#FFCCCB";
             drawer.alertMessgae = "Sorry there are not enough bills to dispense change for : $" + target;
             drawer.showAlert = true;
         }

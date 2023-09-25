@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { MoneyCounts } from "../types";
+import { BillCounts } from "../types";
 
 interface Props{
-    showChangeOptions: (amount:number) => MoneyCounts[];
+    showChangeOptions: (amount:number) => BillCounts[];
  
 }
 export default function ChangeDispenser({showChangeOptions} : Props) {

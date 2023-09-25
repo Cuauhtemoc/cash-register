@@ -46,11 +46,11 @@ describe('Test useCashRegister hook', () => {
         act(() => { result.current.takeMoney(1, 10); });
         act(() => { result.current.showChangeOptions(11); });
 
-        const expectedChangeOptions = [{ 5: 1, 2: 3 }];
+        const expectedChangeOptions = [{ 1:0, 2:3, 5:1, 10:0, 20:0 }];
         expect(result.current.drawer.changeOptions).toEqual(expectedChangeOptions);
 
     });
-    it('should return an empty array if no change', () => {
+    it('should return an empty array if there is not enough bills', () => {
         const { result } = renderHook(() => useCashRegister());
         act(() => { result.current.addMoney(20, 2); });
         act(() => { result.current.addMoney(10, 6); });
