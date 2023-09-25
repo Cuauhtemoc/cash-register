@@ -4,11 +4,9 @@ import { CashRegister, CashRegisterHook, MoneyCounts } from '../types';
 const useCashRegister = (): CashRegisterHook => {
     
     const [drawer, setCashRegister] = useState<CashRegister>({
-        denominations:[20,10,5,2,1],
+        denominations:[1,2,5,10,20],
         total: 0,
-        changeOptions : [{
-            1:1
-        }],
+        changeOptions : [],
         moneyCounts: {
             20: 0,
             10: 0,
@@ -57,19 +55,46 @@ const useCashRegister = (): CashRegisterHook => {
             moneyCounts: updatedCounts,
         }));
     };
+  
+    const dispenseChange = (change : MoneyCounts) => {
+        let currentTotal = drawer.total;
+        let currentCounts = {...drawer.moneyCounts}
 
-    const dispenseChange = (target: number) => {
-        console.log('test');
+        for(const [denomination, count] of Object.entries(change) ){
+            //parse the entries to int so we can use them
+            const denominationNumber = parseInt(denomination, 10); 
+            const countNumber = parseInt(count, 10); 
+            currentCounts[denominationNumber] -= countNumber;
+            currentTotal -= denominationNumber * countNumber;
+            
+        }  
+        //after we have removed the money we need to update the drawer with the new counts and total
+        setCashRegister((prevCashRegister) => ({
+            ...prevCashRegister,
+            total: currentTotal,
+            moneyCounts: {...currentCounts},
+            changeOptions: []
+        }));
+    }
+    const showChangeOptions = (target: number) => {
         //copy the contents of our register as we don't want to actually modify the contents yet
         const availableBills = { ...drawer.moneyCounts };
         //represents the what bills can be included in out change
         const candidates = [20, 10, 5, 2, 1];
         const result: MoneyCounts[] = [];
+        //template to make sure the change options are all formatted correcttly
+        const changeTemplate = {
+            1: 0,
+            10 : 0, 
+            5 : 0, 
+            2: 0,
+            20 : 0
+        }
         //using a backtrack solution here to find all possible ways the change can be dispensed
         const backtrack = (currentChange: MoneyCounts, index: number, remainingAmount: number) => {
             //combination found push it to the results array 
             if (remainingAmount === 0) {
-                result.push({ ...currentChange });
+                result.push({ ...changeTemplate, ...currentChange });
                 return;
             }
             //we are out of bounds so discard this combination 
@@ -105,14 +130,16 @@ const useCashRegister = (): CashRegisterHook => {
             ...prevCashRegister,
             changeOptions: [...result]
         }));
-        
+
+        return result;
     }
     return {
         drawer,
+        dispenseChange,
         emptyRegister,
         addMoney,
         takeMoney,
-        dispenseChange,
+        showChangeOptions,
     };
 };
 

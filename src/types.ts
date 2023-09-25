@@ -12,7 +12,8 @@ export interface CashRegister {
 export interface CashRegisterHook {
     drawer: CashRegister;
     emptyRegister: () => void;
+    dispenseChange : (change : MoneyCounts) => void ;
     addMoney: (denomination: number, count: number) => void;
     takeMoney: (denomination: number, count: number) => void;
-    dispenseChange: (changeAmount: number) => void;
+    showChangeOptions: (changeAmount: number) => void;
 }

@@ -44,7 +44,7 @@ describe('Test useCashRegister hook', () => {
         act(() => { result.current.takeMoney(10, 4); });
         act(() => { result.current.takeMoney(5, 3); });
         act(() => { result.current.takeMoney(1, 10); });
-        act(() => { result.current.dispenseChange(11); });
+        act(() => { result.current.showChangeOptions(11); });
 
         const expectedChangeOptions = [{ 5: 1, 2: 3 }];
         expect(result.current.drawer.changeOptions).toEqual(expectedChangeOptions);
@@ -61,10 +61,10 @@ describe('Test useCashRegister hook', () => {
         act(() => { result.current.takeMoney(10, 4); });
         act(() => { result.current.takeMoney(5, 3); });
         act(() => { result.current.takeMoney(1, 10); });
-        act(() => { result.current.dispenseChange(11); });
+        act(() => { result.current.showChangeOptions(11); });
         act(() => { result.current.takeMoney(5, 1); });
         act(() => { result.current.takeMoney(2, 3); });
-        act(() => { result.current.dispenseChange(14); });
+        act(() => { result.current.showChangeOptions(14); });
     
         expect(result.current.drawer.changeOptions).toEqual([]);
 
