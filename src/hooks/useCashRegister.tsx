@@ -4,6 +4,9 @@ import { CashRegister, CashRegisterHook, MoneyCounts } from '../types';
 const useCashRegister = (): CashRegisterHook => {
     
     const [drawer, setCashRegister] = useState<CashRegister>({
+        alertMessgae: "",
+        alertColor: '',
+        showAlert: false,
         denominations:[1,2,5,10,20],
         total: 0,
         changeOptions : [],
@@ -19,6 +22,9 @@ const useCashRegister = (): CashRegisterHook => {
     //reset the register
     const emptyRegister = () => {
         setCashRegister({
+            alertMessgae: "",
+            alertColor: '',
+            showAlert: false,
             denominations:[20,10,5,2,1],
             total: 0,
             changeOptions : [],
@@ -46,7 +52,12 @@ const useCashRegister = (): CashRegisterHook => {
             moneyCounts: updatedCounts,
         }));
     };
-
+    const hideAlert = () : void => {
+        setCashRegister((prevCashRegister) => ({
+            ...prevCashRegister,
+            showAlert : false
+        }));
+    }
     const takeMoney = (denomination: number, count: number): void => {
         const updatedCounts = updateRegisterCounts(denomination, -count);
         setCashRegister((prevCashRegister) => ({
@@ -73,10 +84,13 @@ const useCashRegister = (): CashRegisterHook => {
             ...prevCashRegister,
             total: currentTotal,
             moneyCounts: {...currentCounts},
-            changeOptions: []
+            changeOptions: [],
+            alertColor:'green',
+            alertMessgae: "Change chosen",
+            showAlert: true
         }));
     }
-    const showChangeOptions = (target: number) => {
+    const showChangeOptions = (target: number) : MoneyCounts[] => {
         //copy the contents of our register as we don't want to actually modify the contents yet
         const availableBills = { ...drawer.moneyCounts };
         //represents the what bills can be included in out change
@@ -131,6 +145,17 @@ const useCashRegister = (): CashRegisterHook => {
             changeOptions: [...result]
         }));
 
+        //set the alerts
+        if(result.length > 0){
+            drawer.alertColor = "blue";
+            drawer.alertMessgae = "Change dispensed"
+            drawer.showAlert = true;
+        }
+        else {
+            drawer.alertColor = "red";
+            drawer.alertMessgae = "Sorry there are not enough bills to dispense change for : $" + target;
+            drawer.showAlert = true;
+        }
         return result;
     }
     return {
@@ -140,6 +165,7 @@ const useCashRegister = (): CashRegisterHook => {
         addMoney,
         takeMoney,
         showChangeOptions,
+        hideAlert
     };
 };
 

@@ -3,6 +3,9 @@ export interface MoneyCounts {
 }
 
 export interface CashRegister {
+    alertMessgae: string;
+    alertColor: string;
+    showAlert: boolean,
     denominations: number[];
     total: number;
     changeOptions?: MoneyCounts[];
@@ -15,5 +18,6 @@ export interface CashRegisterHook {
     dispenseChange : (change : MoneyCounts) => void ;
     addMoney: (denomination: number, count: number) => void;
     takeMoney: (denomination: number, count: number) => void;
-    showChangeOptions: (changeAmount: number) => void;
+    showChangeOptions: (changeAmount: number) => MoneyCounts[];
+    hideAlert: () => void;
 }

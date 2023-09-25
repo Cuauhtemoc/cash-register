@@ -1,21 +1,20 @@
+import { CashRegisterHook } from "../types";
 
 interface Props {
-    amount: number;
-    visible: boolean;
-    hideAlert: Function
+    cashRegister: CashRegisterHook
 }
-const Alert = ({ amount, visible, hideAlert}: Props) => {
-
-    if(visible) return (
+const Alert = ({ cashRegister}: Props) => {
+   
+    if(cashRegister.drawer.showAlert) return (
          (
-            <div className="mx-4 relative p-4 mb-4 border rounded bg-red-200">
+            <div className={`mx-4 relative p-4 mb-4 border rounded bg-${cashRegister.drawer.alertColor}-200`}>
                 <button
-                    onClick={()=> hideAlert()}
-                    className="absolute top-0 right-0 px-2 py-1 mr-2 text-red-700"
+                    onClick={()=> cashRegister.hideAlert()}
+                    className={`absolute top-0 right-0 px-2 py-1 mr-2 text-${cashRegister.drawer.alertColor}-700`}
                 >
                     X
                 </button>
-                Sorry there are not enough bills to dispense change for : ${amount}
+                {cashRegister.drawer.alertMessgae}
             </div>
         )
     );

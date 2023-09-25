@@ -2,8 +2,8 @@ import React from "react";
 
 interface Props {
     demonination: number;
-    addMoney: Function,
-    takeMoney: Function,
+    addMoney: (demonination:number, amount: number) => void,
+    takeMoney: (demonination:number, amount: number) => void,
  
 }
 export default function CashRegisterButton({ demonination, addMoney, takeMoney }: Props) {

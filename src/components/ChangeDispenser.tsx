@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import Alert from "./Alert";
+import { MoneyCounts } from "../types";
 
 interface Props{
-    dispenseChange: Function
+    showChangeOptions: (amount:number) => MoneyCounts[];
+ 
 }
-export default function ChangeDispenser({dispenseChange} : Props) {
+export default function ChangeDispenser({showChangeOptions} : Props) {
+    
     const [amount, setAmount] = useState(0);
-    const [showAlert, setShowAlert]= useState(false);
+
 
     const onSubmit = (e: any) => {
         e.preventDefault()
-        setShowAlert(dispenseChange(amount).length === 0 ? true : false);
-
+        showChangeOptions(amount);
     }
+    
     return (
         <form onSubmit={onSubmit}>
             <div className="grid gap-6 mb-6">
@@ -22,7 +25,7 @@ export default function ChangeDispenser({dispenseChange} : Props) {
                 </div>
                 <button className="bg-emerald-800 m-4 cursor-pointer hover:bg-emerald-600 text-white font-bold py-2 px-4 border-b-4 border-emerald-700 hover:border-emerald-500 rounded">Show options for change</button>
             </div>
-            <Alert amount={amount} visible={showAlert} hideAlert={() => setShowAlert(false)}/>
+         
         </form>
     )
 }
