@@ -8,7 +8,7 @@ interface Props {
 export default function CashRegisterDrawer({ cashRegister }: Props) {
 
     return (
-        <div className="grid grid-cols-5">
+        <div className="grid grid-2 lg:grid-cols-5">
             {cashRegister.drawer.denominations.map((d: number) => {
                 return (
                     <CashRegisterButton key={`add-${d}`} demonination={d} addMoney={cashRegister.addMoney} takeMoney={cashRegister.takeMoney}/>
